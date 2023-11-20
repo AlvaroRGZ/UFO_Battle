@@ -1,0 +1,31 @@
+.background {
+  background-image: url('src/assets/images/game_dark_background.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+.central-element {
+  text-align: center;
+  padding: 20px;
+}
+
+.central-element {
+  text-align: center;
+  padding: 20px;
+  color: white;
+}
+
+.central-element .gameTitle {
+  font-size: 36px;
+}
+
+.bottom-right {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: white;
+  font-size: 16px;
+  font-size: 30px;
+}
