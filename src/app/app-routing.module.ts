@@ -3,11 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import {PresentationComponent} from "./presentation/presentation.component";
 import {RegistrationComponent} from "./registration/registration.component";
 import {PreferencesComponent} from "./preferences/preferences.component";
+import {LoginComponent} from "./login/login.component";
 
 const routes: Routes = [
   {path: 'presentation', component: PresentationComponent},
-  {path: 'registration', component: RegistrationComponent},
   {path: 'preferences', component: PreferencesComponent},
+  {path: 'registration', component: RegistrationComponent},
+  {path: 'login', component: LoginComponent},
   {path: ' ', redirectTo: 'presentation', pathMatch: 'full'}
 ];
 

@@ -8,6 +8,7 @@ import { PresentationComponent } from './presentation/presentation.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RegistrationComponent } from './registration/registration.component';
 import { PreferencesComponent } from './preferences/preferences.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { PreferencesComponent } from './preferences/preferences.component';
     MenuComponent,
     PresentationComponent,
     RegistrationComponent,
-    PreferencesComponent
+    PreferencesComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
