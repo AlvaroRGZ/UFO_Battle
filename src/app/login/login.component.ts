@@ -2,13 +2,16 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FenmAPIService } from 'src/app/shared/services/fenm-api.service';
+import { SessionStorageManagerService } from 'src/app/shared/services/session-storage-manager.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  providers:  [ FenmAPIService ]
+  providers:  [ FenmAPIService,
+                SessionStorageManagerService
+  ]
 })
 
 export class LoginComponent {
@@ -16,7 +19,7 @@ export class LoginComponent {
   password: string = '';
 
   constructor(private router: Router, private apiService: FenmAPIService,
-              private toastr: ToastrService) {}
+              private toastr: ToastrService, private  sessionStorageManagerService: SessionStorageManagerService) {}
 
   validateSubmit() : void {
     let valid: boolean = true;
@@ -39,17 +42,23 @@ export class LoginComponent {
     this.apiService.login(url).subscribe(
       (response: any) => {
         if (response.status === 200) {
-          const jwtToken : string = response.headers.get('authorization');
+          const jwtToken: string = response.headers.get('authorization');
           console.log('Logged in!', jwtToken);
-          this.toastr.success(jwtToken, 'Logged in!');
+          this.toastr.success("Welcome " + this.username + "!", 'Logged in!');
+          this.sessionStorageManagerService.saveJWToken(jwtToken);
         } else {
-          console.log('Login failed: Invalid login name or password');
-          this.toastr.info('Invalid login name or password', 'Login failed');
+          console.log('Login: Worked but errors');
+          this.toastr.info('Login: Worked but errors', 'Login failed');
         }
       },
       error => {
-        console.error('Error during login:', error);
-        this.toastr.error(error, 'Login failed');
+        if (error.status === 401) {
+          console.log('Login failed: Authorization declined');
+          this.toastr.error('Invalid credentials', 'Login failed');
+        } else {
+          console.log('Login failed: Invalid login name or password');
+          this.toastr.error('Invalid login name or password', 'Login failed');
+        }
       }
     );
   }
