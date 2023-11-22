@@ -18,7 +18,22 @@ export class LoginComponent {
   constructor(private router: Router, private apiService: FenmAPIService,
               private toastr: ToastrService) {}
 
-  onSubmit() {
+  validateSubmit() : void {
+    let valid: boolean = true;
+    if (this.username == '' || this.username == ' ') {
+      this.toastr.error("Username required");
+      valid = false;
+    }
+    if (this.password == '' || this.password == ' ') {
+      this.toastr.error("password required");
+      valid = false;
+    }
+    if (valid) {
+      this.sendLoginRequest();
+    }
+  }
+
+  sendLoginRequest() {
     const url = `http://wd.etsisi.upm.es:10000/users/login?username=${this.username}&password=${this.password}`;
 
     this.apiService.login(url).subscribe(

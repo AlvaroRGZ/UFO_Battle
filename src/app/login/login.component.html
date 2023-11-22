@@ -3,7 +3,7 @@
 <div class="background">
   <div class="form-container col-3">
     <h1>Login</h1>
-    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+    <form (ngSubmit)="validateSubmit()" #loginForm="ngForm">
       <div class="form-group">
         <label for="username">Username</label>
         <input type="text" class="form-control" id="username" name="username"  placeholder="Enter username" [(ngModel)]="username">
