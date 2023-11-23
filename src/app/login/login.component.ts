@@ -37,7 +37,7 @@ export class LoginComponent {
   }
 
   sendLoginRequest() {
-    const url = `http://wd.etsisi.upm.es:10000/users/login?username=${this.username}&password=${this.password}`;
+    const url = `username=${this.username}&password=${this.password}`;
 
     this.apiService.login(url).subscribe(
       (response: any) => {

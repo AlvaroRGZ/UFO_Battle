@@ -7,10 +7,23 @@ import { Observable } from 'rxjs';
 })
 
 export class FenmAPIService {
+  private API_ROOT: string = 'http://wd.etsisi.upm.es:10000/';
   constructor(private http: HttpClient) {}
 
-  login(url: string): Observable<any> {
-    return this.http.get(url, { observe: 'response' });
+  login(urlEncodedParams: string): Observable<any> {
+    const path: string = 'users/login?';
+    return this.http.get(this.API_ROOT + path + urlEncodedParams,
+                  { observe: 'response' });
+  }
+  register(urlEncodedParams: any): Observable<any> {
+    const path: string = 'users';
+    return this.http.post(this.API_ROOT + path, urlEncodedParams,
+        { observe: 'response' });
+  }
+  doesUsernameExists(username: string): Observable<any> {
+    const path: string = 'users/';
+    return this.http.get(this.API_ROOT + path + username,
+        { observe: 'response' });
   }
 }
 
