@@ -15,6 +15,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RegistrationComponent } from './registration/registration.component';
 import { PreferencesComponent } from './preferences/preferences.component';
 import { LoginComponent } from './login/login.component';
+import { GameComponent } from './game/game.component';
+import { EnemyComponent } from './enemy/enemy.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { LoginComponent } from './login/login.component';
     PresentationComponent,
     RegistrationComponent,
     PreferencesComponent,
-    LoginComponent
+    LoginComponent,
+    GameComponent,
+    EnemyComponent
   ],
   imports: [
     CommonModule,

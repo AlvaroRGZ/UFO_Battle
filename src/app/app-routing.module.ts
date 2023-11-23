@@ -4,10 +4,12 @@ import {PresentationComponent} from "./presentation/presentation.component";
 import {RegistrationComponent} from "./registration/registration.component";
 import {PreferencesComponent} from "./preferences/preferences.component";
 import {LoginComponent} from "./login/login.component";
+import {GameComponent} from "./game/game.component";
 
 const routes: Routes = [
   {path: 'presentation', component: PresentationComponent},
   {path: 'preferences', component: PreferencesComponent},
+  {path: 'game', component: GameComponent},
   {path: 'registration', component: RegistrationComponent},
   {path: 'login', component: LoginComponent},
   {path: ' ', redirectTo: 'presentation', pathMatch: 'full'}

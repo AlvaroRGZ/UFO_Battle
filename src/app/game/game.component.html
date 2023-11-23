@@ -1,0 +1,9 @@
+<div id="enemy_space" *ngFor="let enemy of enemies; let i = index">
+  <app-enemy [numeralID]="i"></app-enemy>
+</div>
+
+<!-- Improved Score box -->
+<div id="score-box">
+  <div>Score: <span class="score" id="score">0</span></div>
+  <div>Time Remaining: <span class="score" id="timeLeft">0</span></div>
+</div>
