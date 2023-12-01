@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core';
+import {Enemy} from "../model/enemy";
 
 @Component({
   selector: 'app-enemy',
@@ -6,46 +7,39 @@ import {Component, Input} from '@angular/core';
   styleUrls: ['./enemy.component.css']
 })
 export class EnemyComponent {
-
-  id: string;
-  @Input() numeralID: number = 1;
-
-  width: number;
-  position: string;
-  left: number;
-  top: number;
-
-  src: string = 'assets/images/ufo.png';
+  enemies: Enemy[];
+  enemies_horizontal_step: number = 5;
+  pid: number;
 
   constructor() {
-    this.id = 'enemy' + this.numeralID;
-
-    this.width = 60;
-    this.position = 'absolute';
-    this.top = this.width + this.numeralID * this.width;
-    this.left = Math.random() * (window.innerWidth - this.width);
-  }
-
-  ngOnInit(): void {
-    this.width = 60;
-    this.position = 'absolute';
-    this.top = this.width + this.numeralID * this.width;
-    this.left = Math.random() * (window.innerWidth - this.width);
-  }
-
-  move(hstep: number, Rlimit: number): number {
-    const newHpos = this.left + hstep;
-    if (newHpos > Rlimit - this.width || newHpos < 0) {
-      return -1;
+    this.enemies = [];
+    this.pid = 0;
+    for (let i = 1; i <= 7; i++) {
+      this.enemies.push(new Enemy(i));
     }
-    this.left = newHpos;
-    return 1;
-  }
-  explode() {
-    this.src = 'assets/gifs/explosion.gif';
+    this.startMoving();
   }
 
-  reset() {
-    this.src = 'assets/images/ufo.png';
+  private createEnemies(number: number) {
+    for (let i = 1; i <= number; i++) {
+      this.enemies.push(new Enemy(i));
+    }
+  }
+
+  private moveUFOs(): void {
+    for (let i: number = 0; i < this.enemies.length; i++) {
+      this.enemies[i].move(this.enemies_horizontal_step);
+    }
+  }
+
+  startMoving() {
+    if (this.pid != 0) {
+      clearInterval(this.pid);
+    }
+    this.pid = setInterval(() => this.moveUFOs(), 25);
+  }
+
+  stop() {
+    clearInterval(this.pid);
   }
 }

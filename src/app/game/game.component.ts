@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import {EnemyComponent} from "../enemy/enemy.component";
+import {Component, EventEmitter, Output} from '@angular/core';
 
 @Component({
   selector: 'app-game',
@@ -7,14 +6,16 @@ import {EnemyComponent} from "../enemy/enemy.component";
   styleUrls: ['./game.component.css']
 })
 export class GameComponent {
-  enemies: EnemyComponent[] = [];
+
   constructor() {
-    this.createEnemies(5);
   }
 
-  private createEnemies(number: number) {
-    for (let i = 1; i <= number; i++) {
-      this.enemies.push(new EnemyComponent());
-    }
+  stopUFOs() {
+      console.log("Parar ufos");
   }
+
+  explotar(id: number): void {
+    // Enviar mensaje al hijo
+  }
+
 }
