@@ -1,5 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {Enemy} from "../model/enemy";
+import {GameControllerService} from "../shared/services/game-controller.service";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-enemy',
@@ -11,19 +13,13 @@ export class EnemyComponent {
   enemies_horizontal_step: number = 5;
   pid: number;
 
-  constructor() {
+  constructor(private gameController: GameControllerService) {
     this.enemies = [];
     this.pid = 0;
-    for (let i = 1; i <= 7; i++) {
+    for (let i = 0; i < 5; i++) {
       this.enemies.push(new Enemy(i));
     }
     this.startMoving();
-  }
-
-  private createEnemies(number: number) {
-    for (let i = 1; i <= number; i++) {
-      this.enemies.push(new Enemy(i));
-    }
   }
 
   private moveUFOs(): void {
@@ -41,5 +37,20 @@ export class EnemyComponent {
 
   stop() {
     clearInterval(this.pid);
+  }
+
+  ngOnInit(): void {
+    this.gameController.enemyExplosion$.pipe(takeUntil(this.destroy$)).subscribe((enemyId) => {
+      if (this.enemies && 0 <= enemyId && enemyId < this.enemies.length) {
+        this.enemies[enemyId].explode();
+      }
+    });
+  }
+
+  private destroy$ = new Subject<void>();
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

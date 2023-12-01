@@ -1,4 +1,5 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component} from '@angular/core';
+import {GameControllerService} from "../shared/services/game-controller.service";
 
 @Component({
   selector: 'app-game',
@@ -7,7 +8,7 @@ import {Component, EventEmitter, Output} from '@angular/core';
 })
 export class GameComponent {
 
-  constructor() {
+  constructor(private gameController: GameControllerService) {
   }
 
   stopUFOs() {
@@ -15,7 +16,7 @@ export class GameComponent {
   }
 
   explotar(id: number): void {
-    // Enviar mensaje al hijo
+    this.gameController.triggerEnemyExplosion(id);
   }
 
 }
