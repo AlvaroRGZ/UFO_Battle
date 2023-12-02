@@ -1,7 +1,6 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 import {Enemy} from "../model/enemy";
 import {GameControllerService} from "../shared/services/game-controller.service";
-import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-enemy',

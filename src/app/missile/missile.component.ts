@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {GameComponent} from "../game/game.component";
 
 @Component({
   selector: 'app-missile',
@@ -19,14 +20,14 @@ export class MissileComponent {
 
   constructor() {}
 
-  ascend(pid: number): void {
+  ascend(game: GameComponent): void {
     let vpos_m = this.bottom;
     let displacement = vpos_m + this.vstep;
     if (displacement < window.innerHeight) {
       this.bottom = displacement;
     } else {
-      // this.game.registerMissedShot();
-      this.resetPosition(pid);
+      game.score -= 25;
+      this.resetPosition(game.pid);
     }
   }
 
@@ -48,11 +49,6 @@ export class MissileComponent {
     this.bottom = 0;
     this.markAsNotLaunched();
     clearInterval(pid);
-  }
-
-  checkForHit(ufo: any): boolean {
-    // Implement checkForHit logic
-    return false;
   }
 
   isLaunched(): boolean {

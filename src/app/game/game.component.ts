@@ -3,6 +3,8 @@ import {GameControllerService} from "../shared/services/game-controller.service"
 import {MissileControllerService} from "../shared/services/missile-controller.service";
 import {MissileComponent} from "../missile/missile.component";
 import {EnemyComponent} from "../enemy/enemy.component";
+import {PreferencesComponent} from "../preferences/preferences.component";
+import {SessionStorageManagerService} from "../shared/services/session-storage-manager.service";
 
 @Component({
   selector: 'app-game',
@@ -12,14 +14,14 @@ import {EnemyComponent} from "../enemy/enemy.component";
 export class GameComponent {
   @ViewChild(MissileComponent) missile!: MissileComponent;
   @ViewChild(EnemyComponent) enemies!: EnemyComponent;
-  private pid: number = 0;
 
+  pid: number = 0;
   score: number = 0;
   totalTime: number;
   timerColor: string = 'yellow';
 
   constructor(private gameController: GameControllerService,
-              private missileController: MissileControllerService) {
+              private sessionStorage: SessionStorageManagerService) {
     this.totalTime = 30;
     this.startTimeLeftCounter();
   }
@@ -52,7 +54,7 @@ export class GameComponent {
 
   private launch() {
     if (this.missile.isLaunched()) {
-      this.missile.ascend(this.pid);
+      this.missile.ascend(this);
       this.checkForHit();
     }
   }
@@ -62,6 +64,7 @@ export class GameComponent {
     if (destroyedEnemy >= 0) {
       this.enemies.enemies.at(destroyedEnemy)!.explode();
       this.missile.resetPosition(this.pid);
+      this.score += 100;
     }
   }
 
