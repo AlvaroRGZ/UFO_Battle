@@ -39,18 +39,12 @@ export class EnemyComponent {
     clearInterval(this.pid);
   }
 
-  ngOnInit(): void {
-    this.gameController.enemyExplosion$.pipe(takeUntil(this.destroy$)).subscribe((enemyId) => {
-      if (this.enemies && 0 <= enemyId && enemyId < this.enemies.length) {
-        this.enemies[enemyId].explode();
+  public checkForHit(hpos: number, vpos: number, width: number, bottom: number): number {
+    for (let enemy of this.enemies) {
+      if (enemy.checkForHit(hpos, vpos, width, bottom)) {
+        return enemy.numeralID
       }
-    });
-  }
-
-  private destroy$ = new Subject<void>();
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    }
+    return -1;
   }
 }

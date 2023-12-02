@@ -1,11 +1,10 @@
 <div id="game_background">
     <app-enemy></app-enemy>
-
+    <app-missile></app-missile>
 
   <!-- Improved Score box -->
   <div id="score-box">
-    <div>Score: <span class="score" id="score">0</span></div>
-    <div>Time Remaining: <span class="score" id="timeLeft">0</span></div>
-    <button id="boton" class="btn btn-info" (click)="explotar(2)" ></button>
+    <div>Score: <span class="score" id="score">{{score}}</span></div>
+    <div>Time Remaining: <span class="score" [style.color]="timerColor">{{totalTime}}</span></div>
   </div>
 </div>

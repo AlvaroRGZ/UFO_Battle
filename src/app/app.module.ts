@@ -17,6 +17,7 @@ import { PreferencesComponent } from './preferences/preferences.component';
 import { LoginComponent } from './login/login.component';
 import { GameComponent } from './game/game.component';
 import { EnemyComponent } from './enemy/enemy.component';
+import { MissileComponent } from './missile/missile.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { EnemyComponent } from './enemy/enemy.component';
     PreferencesComponent,
     LoginComponent,
     GameComponent,
-    EnemyComponent
+    EnemyComponent,
+    MissileComponent
   ],
   imports: [
     CommonModule,

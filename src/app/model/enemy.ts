@@ -36,4 +36,13 @@ export class Enemy {
   reset() {
     this.src = 'assets/images/ufo.png';
   }
+
+  checkForHit(hpos: number, vpos: number, width: number, height: number): boolean {
+    return (
+      window.innerHeight - (this.top + this.width) <= vpos + height &&
+      window.innerHeight - (this.top + this.width) >= vpos &&
+      hpos + width / 2 >= this.left &&
+      hpos + width / 2 <= this.left + this.width
+    );
+  }
 }
