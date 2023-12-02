@@ -5,6 +5,7 @@ import {MissileComponent} from "../missile/missile.component";
 import {EnemyComponent} from "../enemy/enemy.component";
 import {PreferencesComponent} from "../preferences/preferences.component";
 import {SessionStorageManagerService} from "../shared/services/session-storage-manager.service";
+import {LocalStorageManagerService} from "../shared/services/local-storage-manager.service";
 
 @Component({
   selector: 'app-game',
@@ -21,8 +22,8 @@ export class GameComponent {
   timerColor: string = 'yellow';
 
   constructor(private gameController: GameControllerService,
-              private sessionStorage: SessionStorageManagerService) {
-    this.totalTime = 30;
+              private localStorage: LocalStorageManagerService) {
+    this.totalTime = localStorage.getTime();
     this.startTimeLeftCounter();
   }
 

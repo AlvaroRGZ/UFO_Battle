@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {Enemy} from "../model/enemy";
 import {GameControllerService} from "../shared/services/game-controller.service";
+import {LocalStorageManagerService} from "../shared/services/local-storage-manager.service";
 
 @Component({
   selector: 'app-enemy',
@@ -12,10 +13,12 @@ export class EnemyComponent {
   enemies_horizontal_step: number = 5;
   pid: number;
 
-  constructor(private gameController: GameControllerService) {
+  constructor(private gameController: GameControllerService,
+              private localStorage: LocalStorageManagerService) {
     this.enemies = [];
     this.pid = 0;
-    for (let i = 0; i < 5; i++) {
+    let numberOfEnemies: number = localStorage.getNumberOfUFOs();
+    for (let i = 0; i < numberOfEnemies; i++) {
       this.enemies.push(new Enemy(i));
     }
     this.startMoving();
