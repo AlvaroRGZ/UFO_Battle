@@ -1,11 +1,10 @@
 import {Component, HostListener, ViewChild} from '@angular/core';
 import {GameControllerService} from "../shared/services/game-controller.service";
-import {MissileControllerService} from "../shared/services/missile-controller.service";
 import {MissileComponent} from "../missile/missile.component";
 import {EnemyComponent} from "../enemy/enemy.component";
-import {PreferencesComponent} from "../preferences/preferences.component";
-import {SessionStorageManagerService} from "../shared/services/session-storage-manager.service";
 import {LocalStorageManagerService} from "../shared/services/local-storage-manager.service";
+import Swal from 'sweetalert2'
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-game',
@@ -19,12 +18,16 @@ export class GameComponent {
   pid: number = 0;
   score: number = 0;
   totalTime: number;
+  timerPID: number = 0;
   timerColor: string = 'yellow';
 
-  constructor(private gameController: GameControllerService,
-              private localStorage: LocalStorageManagerService) {
-    this.totalTime = localStorage.getTime();
-    this.startTimeLeftCounter();
+  constructor(private router: Router,
+              private gameController: GameControllerService,
+              private localStorageManager: LocalStorageManagerService) {
+
+    this.displayTutorial();
+
+    this.totalTime = localStorageManager.getTime();
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -70,9 +73,9 @@ export class GameComponent {
   }
 
   startTimeLeftCounter(){
-    let timePID = setInterval(() => {
+    this.timerPID = setInterval(() => {
         if (this.totalTime === 0) {
-          clearInterval(timePID);
+          clearInterval(this.timerPID);
           this.displayEndOfTheGame();
         } else {
           this.totalTime--;
@@ -84,7 +87,64 @@ export class GameComponent {
       , 1000);
   }
 
-  private displayEndOfTheGame() {
+  calculateFinalScore() {
+    let factor = 120 / 60;
+    let penalty = this.calculatePenalties();
+    return (this.score / factor) - penalty;
+  }
 
+  calculatePenalties() {
+    return 50 * (this.localStorageManager.getNumberOfUFOs() - 1);
+  }
+
+  private displayEndOfTheGame() {
+    Swal.fire({
+      title: "<strong>Game over!</strong>",
+      html: `
+        <div>
+          <p>Score: <b>${this.score}</b></p>
+          <p>UFOs Used: <b>${this.localStorageManager.getNumberOfUFOs()}</b></p>
+          <p>Penalties: <b>-${this.calculatePenalties()}</b></p>
+          <p>Final Score: <b>${this.calculateFinalScore()}</b></p>
+        </div>
+      `,
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Play again",
+      denyButtonText: `See records`,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      allowEnterKey: false,
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        } else if (result.isDenied) {
+          this.router.navigate(['login']);
+        } else {
+          this.router.navigate(['presentation']);
+        }
+      });
+  }
+
+  displayTutorial() {
+    Swal.fire({
+      title: 'UFO Game Tutorial',
+      html: `
+      <div>
+        <p>Welcome to the UFO Game! Here's a quick guide to get you started:</p>
+        <ul>
+          <li>Use the <strong>arrow keys</strong> to move the missile <strong>left and right</strong>.</li>
+          <li>Press the <strong>space bar</strong> to launch the missile.</li>
+        </ul>
+        <p>Shoot down the UFOs and score points before the time runs out!</p>
+      <div>
+      `,
+      icon: 'info',
+      confirmButtonText: 'Start'
+    })
+      .then(() => {
+        this.startTimeLeftCounter();
+      });
   }
 }
