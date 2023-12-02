@@ -1,0 +1,24 @@
+.form-container {
+  background-color: #69DDFF;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 25vh auto;
+  width: 75%;
+}
+
+.background {
+  background-image: url('src/assets/images/preferences.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-container {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+}

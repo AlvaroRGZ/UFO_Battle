@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class LocalStorageManagerService {
   DEFAULT_UFOs_NUMBER: number = 3;
-  DEFAULT_TIME: number = 10;
+  DEFAULT_TIME: number = 60;
 
   constructor() {}
 

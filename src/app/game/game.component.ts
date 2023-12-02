@@ -88,7 +88,7 @@ export class GameComponent {
   }
 
   calculateFinalScore() {
-    let factor = 120 / 60;
+    let factor = this.localStorageManager.getTime() / 60;
     let penalty = this.calculatePenalties();
     return (this.score / factor) - penalty;
   }
@@ -104,7 +104,7 @@ export class GameComponent {
         <div>
           <p>Score: <b>${this.score}</b></p>
           <p>UFOs Used: <b>${this.localStorageManager.getNumberOfUFOs()}</b></p>
-          <p>Penalties: <b>-${this.calculatePenalties()}</b></p>
+          <p>Penalties: <b>- ${this.calculatePenalties()}</b></p>
           <p>Final Score: <b>${this.calculateFinalScore()}</b></p>
         </div>
       `,
