@@ -25,5 +25,11 @@ export class FenmAPIService {
     return this.http.get(this.API_ROOT + path + username,
         { observe: 'response' });
   }
+
+  getRecords() {
+    const path: string = 'records/';
+    return this.http.get(this.API_ROOT + path,
+      { observe: 'response' });
+  }
 }
 

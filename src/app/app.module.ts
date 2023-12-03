@@ -18,6 +18,7 @@ import { LoginComponent } from './login/login.component';
 import { GameComponent } from './game/game.component';
 import { EnemyComponent } from './enemy/enemy.component';
 import { MissileComponent } from './missile/missile.component';
+import { RecordsComponent } from './records/records.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { MissileComponent } from './missile/missile.component';
     LoginComponent,
     GameComponent,
     EnemyComponent,
-    MissileComponent
+    MissileComponent,
+    RecordsComponent
   ],
   imports: [
     CommonModule,

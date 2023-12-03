@@ -5,10 +5,12 @@ import {RegistrationComponent} from "./registration/registration.component";
 import {PreferencesComponent} from "./preferences/preferences.component";
 import {LoginComponent} from "./login/login.component";
 import {GameComponent} from "./game/game.component";
+import {RecordsComponent} from "./records/records.component";
 
 const routes: Routes = [
   {path: 'presentation', component: PresentationComponent},
   {path: 'preferences', component: PreferencesComponent},
+  {path: 'records', component: RecordsComponent},
   {path: 'game', component: GameComponent},
   {path: 'registration', component: RegistrationComponent},
   {path: 'login', component: LoginComponent},

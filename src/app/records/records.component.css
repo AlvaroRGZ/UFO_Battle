@@ -1,0 +1,20 @@
+body {
+  background-image: url('src/assets/gifs/background_inmerse.gif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 94vh;
+}
+
+.fondo_tabla {
+  background-color: aliceblue;
+}
+
+.centered-table {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 94vh;
+  background-color: white;
+  border-radius: 5%;
+}
