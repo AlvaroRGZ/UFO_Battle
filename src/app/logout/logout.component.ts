@@ -15,6 +15,7 @@ export class LogoutComponent {
   }
   logOut() {
     this.sessionStorageManager.deleteJWT();
+    this.sessionStorageManager.deleteUsername();
     this.toastrService.info("Bye", "Logged Out");
     this.router.navigate(['presentation']);
   }

@@ -41,5 +41,13 @@ export class FenmAPIService {
     return this.http.get(this.API_ROOT + path,
       { observe: 'response' });
   }
+
+  getUserRecords(username: string, jwtoken: string) {
+    const headers = new HttpHeaders().set('Authorization', jwtoken);
+
+    const path: string = 'records/';
+    return this.http.get(this.API_ROOT + path + username,
+      {headers, observe: 'response' });
+  }
 }
 

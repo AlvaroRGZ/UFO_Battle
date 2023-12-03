@@ -45,6 +45,7 @@ export class LoginComponent {
           const jwtToken: string = response.headers.get('authorization');
           this.toastr.success("Welcome " + this.username + "!", 'Logged in!');
           this.sessionStorageManagerService.saveJWToken(jwtToken);
+          this.sessionStorageManagerService.saveUsername(this.username);
         } else {
           console.log('Login: Worked but errors');
           this.toastr.info('Login: Worked but errors', 'Login failed');

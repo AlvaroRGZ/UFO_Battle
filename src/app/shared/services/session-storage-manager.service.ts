@@ -14,7 +14,23 @@ export class SessionStorageManagerService {
     return sessionStorage.getItem("jwtoken") as string;
   }
 
+  userIsLoggedIn(): boolean {
+    return this.getJWToken() != null;
+  }
+
   deleteJWT() {
     sessionStorage.removeItem("jwtoken");
+  }
+
+  saveUsername(username: string) {
+    sessionStorage.setItem("username", username);
+  }
+
+  getUsername(): string {
+    return sessionStorage.getItem("username") as string;
+  }
+
+  deleteUsername() {
+    sessionStorage.removeItem("username");
   }
 }

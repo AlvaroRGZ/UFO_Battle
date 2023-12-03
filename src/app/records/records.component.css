@@ -1,9 +1,12 @@
-body {
+.background {
   background-image: url('src/assets/gifs/background_inmerse.gif');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   height: 94vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .fondo_tabla {

@@ -1,29 +1,58 @@
-<div class="container mt-4">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card">
-        <div class="card-body">
-          <h1 class="text-center">Records</h1>
-          <table id="records_table" class="table table-striped">
-            <thead>
-            <tr>
-              <th>Username</th>
-              <th>Points</th>
-              <th>UFOs</th>
-              <th>Seconds</th>
-              <th>Date</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let record of records">
-              <td>{{ record.username }}</td>
-              <td>{{ record.punctuation }}</td>
-              <td>{{ record.ufos }}</td>
-              <td>{{ record.disposedTime }}</td>
-              <td>{{ record.recordDate | date: 'medium' }}</td>
-            </tr>
-            </tbody>
-          </table>
+<div class="background">
+  <div class="container mt-4">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card fondo_tabla">
+          <div class="card-body">
+            <h1 class="text-center">Records</h1>
+            <table id="records_table" class="table table-striped">
+              <thead>
+              <tr>
+                <th>Username</th>
+                <th>Points</th>
+                <th>UFOs</th>
+                <th>Seconds</th>
+                <th>Date</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let record of records">
+                <td>{{ record.username }}</td>
+                <td>{{ record.punctuation }}</td>
+                <td>{{ record.ufos }}</td>
+                <td>{{ record.disposedTime }}</td>
+                <td>{{ record.recordDate | date: 'medium' }}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="this.userLoggedIn" class="col-md-6">
+        <div class="card fondo_tabla">
+          <div class="card-body">
+            <h1 class="text-center">Personal records</h1>
+            <table id="user_records_table" class="table table-striped">
+              <thead>
+              <tr>
+                <th>Username</th>
+                <th>Points</th>
+                <th>UFOs</th>
+                <th>Seconds</th>
+                <th>Date</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let record of userRecords">
+                <td>{{ record.username }}</td>
+                <td>{{ record.punctuation }}</td>
+                <td>{{ record.ufos }}</td>
+                <td>{{ record.disposedTime }}</td>
+                <td>{{ record.recordDate | date: 'medium' }}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
