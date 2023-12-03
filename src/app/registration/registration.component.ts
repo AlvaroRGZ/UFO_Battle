@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {FenmAPIService} from "../shared/services/fenm-api.service";
 import {SessionStorageManagerService} from "../shared/services/session-storage-manager.service";
 import {ToastrService} from "ngx-toastr";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-registration',
@@ -21,7 +22,7 @@ export class RegistrationComponent {
 
   constructor(private apiService: FenmAPIService,
               private toastr: ToastrService,
-              private  sessionStorageManagerService: SessionStorageManagerService) {}
+              private router: Router) {}
 
   validateSubmit(event: any) : void {
     event.preventDefault();
@@ -52,26 +53,22 @@ export class RegistrationComponent {
   }
 
   register() {
-      const userData = {
-          username: this.username,
-          email: this.email,
-          password: this.password
-      };
+
     let url = `username=${this.username}&email=${this.email}`;
         url += `&password=${this.password}`;
-    this.apiService.register(url).subscribe(
+    this.apiService.register(this.username,
+                             this.email,
+                             this.password
+                                          ).subscribe(
         (response: any) => {
             if (response.status === 201) {
                 console.log(this.username + ' registered successfully');
-                this.toastr.error(this.username + ' registered successfully', 'Success');
+                this.toastr.success(this.username + ' registered successfully', 'Success');
             } else {
                 console.log('Error managing server response');
             }
         },
         error => {
-            if (error.status === 200) {
-                console.log('KHE');
-            }
             if (error.status === 400) {
                 console.log('Missing arguments');
                 this.toastr.error('Missing arguments', 'Error');
