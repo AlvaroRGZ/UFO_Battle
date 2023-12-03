@@ -19,6 +19,7 @@ import { GameComponent } from './game/game.component';
 import { EnemyComponent } from './enemy/enemy.component';
 import { MissileComponent } from './missile/missile.component';
 import { RecordsComponent } from './records/records.component';
+import { LogoutComponent } from './logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { RecordsComponent } from './records/records.component';
     GameComponent,
     EnemyComponent,
     MissileComponent,
-    RecordsComponent
+    RecordsComponent,
+    LogoutComponent
   ],
   imports: [
     CommonModule,

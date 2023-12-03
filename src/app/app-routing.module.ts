@@ -6,6 +6,7 @@ import {PreferencesComponent} from "./preferences/preferences.component";
 import {LoginComponent} from "./login/login.component";
 import {GameComponent} from "./game/game.component";
 import {RecordsComponent} from "./records/records.component";
+import {LogoutComponent} from "./logout/logout.component";
 
 const routes: Routes = [
   {path: 'presentation', component: PresentationComponent},
@@ -14,6 +15,7 @@ const routes: Routes = [
   {path: 'game', component: GameComponent},
   {path: 'registration', component: RegistrationComponent},
   {path: 'login', component: LoginComponent},
+  {path: 'logout', component: LogoutComponent},
   {path: ' ', redirectTo: 'presentation', pathMatch: 'full'}
 ];
 

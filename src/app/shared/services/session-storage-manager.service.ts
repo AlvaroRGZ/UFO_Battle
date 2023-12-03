@@ -13,4 +13,8 @@ export class SessionStorageManagerService {
   getJWToken(): string {
     return sessionStorage.getItem("jwtoken") as string;
   }
+
+  deleteJWT() {
+    sessionStorage.removeItem("jwtoken");
+  }
 }

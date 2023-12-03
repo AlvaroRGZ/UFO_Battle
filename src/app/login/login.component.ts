@@ -43,7 +43,6 @@ export class LoginComponent {
       (response: any) => {
         if (response.status === 200) {
           const jwtToken: string = response.headers.get('authorization');
-          console.log('Logged in!', jwtToken);
           this.toastr.success("Welcome " + this.username + "!", 'Logged in!');
           this.sessionStorageManagerService.saveJWToken(jwtToken);
         } else {

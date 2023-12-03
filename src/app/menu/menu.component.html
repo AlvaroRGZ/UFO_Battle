@@ -24,8 +24,13 @@
   </div>
 
   <div class="navbar-nav ml-auto">
-    <a class="nav-link" routerLink="registration">Register</a>
-    <a class="nav-link" routerLink="login">Login</a>
+    <ng-container *ngIf="!isLoggedIn(); else loggedIn">
+      <a class="nav-link" routerLink="registration">Register</a>
+      <a class="nav-link" routerLink="login">Login</a>
+    </ng-container>
+    <ng-template #loggedIn>
+      <a class="nav-link" routerLink="logout">Logout</a>
+    </ng-template>
   </div>
 </nav>
 
