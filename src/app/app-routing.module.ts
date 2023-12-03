@@ -17,6 +17,7 @@ const routes: Routes = [
   {path: 'registration', component: RegistrationComponent, canActivate: [RouteGuardService]},
   {path: 'login', component: LoginComponent},
   {path: 'logout', component: LogoutComponent},
+  {path: '', redirectTo: 'presentation', pathMatch: 'full'},
   {path: ' ', redirectTo: 'presentation', pathMatch: 'full'}
 ];
 

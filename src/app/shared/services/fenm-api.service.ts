@@ -18,12 +18,12 @@ export class FenmAPIService {
 
   register(username: string, email: string, password: string): Observable<any> {
     const path: string = 'users';
-    const urlEncodedParams = new HttpParams()
+    const urlEncodedParams: HttpParams = new HttpParams()
       .set('username', username)
       .set('email', email)
       .set('password', password);
 
-    const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
+    const headers: HttpHeaders = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
     headers.set('accept', 'application/json');
 
     return this.http.post(this.API_ROOT + path, urlEncodedParams,
@@ -43,7 +43,7 @@ export class FenmAPIService {
   }
 
   getUserRecords(username: string, jwtoken: string) {
-    const headers = new HttpHeaders().set('Authorization', jwtoken);
+    const headers: HttpHeaders = new HttpHeaders().set('Authorization', jwtoken);
 
     const path: string = 'records/';
     return this.http.get(this.API_ROOT + path + username,
@@ -51,7 +51,7 @@ export class FenmAPIService {
   }
 
   saveUserRecord(score: number, ufos: number, time: number, jwtoken: string) {
-    const headers = new HttpHeaders()
+    const headers: HttpHeaders = new HttpHeaders()
       .set('Content-Type', 'application/x-www-form-urlencoded')
       .set('accept', 'application/json')
       .set('Authorization', jwtoken);

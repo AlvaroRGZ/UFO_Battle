@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+
 import {FenmAPIService} from "../shared/services/fenm-api.service";
+import {SessionStorageManagerService} from "../shared/services/session-storage-manager.service";
+
 import {Record} from "../model/record";
 import { ToastrService } from 'ngx-toastr';
-import {SessionStorageManagerService} from "../shared/services/session-storage-manager.service";
 
 @Component({
   selector: 'app-records',
@@ -18,14 +20,14 @@ export class RecordsComponent implements OnInit {
               private toastr: ToastrService,
               private sessionStorageManager: SessionStorageManagerService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadRecords();
     this.loadUserRecords();
   }
 
-  loadRecords() {
+  loadRecords(): void {
     this.apiService.getRecords().subscribe(
-      (response: any) => {
+      (response: any): void => {
         if (response.status === 200) {
           response.body.forEach((record: any) => {
             this.records.push(
@@ -46,16 +48,16 @@ export class RecordsComponent implements OnInit {
     );
   }
 
-  loadUserRecords() {
+  loadUserRecords(): void {
     if (this.sessionStorageManager.userIsLoggedIn()) {
       this.getUserRecords();
       this.userLoggedIn = true;
     }
   }
 
-  private getUserRecords() {
-    this.apiService.getUserRecords(this.getUserName(), this.sessionStorageManager.getJWToken()).subscribe(
-      (response: any) => {
+  private getUserRecords(): void {
+    this.apiService.getUserRecords(this.sessionStorageManager.getUsername(), this.sessionStorageManager.getJWToken()).subscribe(
+      (response: any): void => {
         if (response.status === 200) {
           response.body.forEach((record: any) => {
             this.userRecords.push(
@@ -71,12 +73,8 @@ export class RecordsComponent implements OnInit {
         }
       },
       error => {
-        this.toastr.error('Server not responding', 'Server error');
+        this.toastr.error('Log in again', 'Session expired');
       }
     );
-  }
-
-  getUserName(): string {
-    return this.sessionStorageManager.getUsername();
   }
 }

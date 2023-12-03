@@ -1,0 +1,5 @@
+.navbar-nav a.nav-link:hover {
+  color: white;
+  background-color: slategrey;
+  border-radius: 15px;
+}

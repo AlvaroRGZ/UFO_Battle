@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import {SessionStorageManagerService} from "../shared/services/session-storage-manager.service";
 
 @Component({
@@ -10,8 +11,7 @@ export class MenuComponent {
   constructor(private sessionStorageManager: SessionStorageManagerService) {}
 
   isLoggedIn(): boolean {
-    return this.sessionStorageManager.getJWToken() != null;
+    return this.sessionStorageManager.userIsLoggedIn();
   }
-
 }
 

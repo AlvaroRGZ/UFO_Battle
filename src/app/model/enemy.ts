@@ -20,20 +20,19 @@ export class Enemy {
   }
 
   move(hstep: number): void {
-    const newHpos = this.left + hstep * this.direction;
+    const newHpos: number = this.left + hstep * this.direction;
     if (newHpos > window.innerWidth - this.width - 8 || newHpos < 0) {
       this.direction *= -1;
     }
-    // console.log(this.id + " value " + newHpos);
     this.left = Math.floor(newHpos);
   }
 
-  explode() {
+  explode(): void {
     this.src = 'assets/gifs/explosion.gif';
     setTimeout(() => this.reset(), 1000);
   }
 
-  reset() {
+  reset(): void {
     this.src = 'assets/images/ufo.png';
   }
 

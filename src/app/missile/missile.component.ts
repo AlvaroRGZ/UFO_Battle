@@ -21,7 +21,7 @@ export class MissileComponent {
   constructor() {}
 
   ascend(game: GameComponent): void {
-    let vpos_m = this.bottom;
+    let vpos_m: number = this.bottom;
     let displacement = vpos_m + this.vstep;
     if (displacement < window.innerHeight) {
       this.bottom = displacement;
@@ -32,14 +32,14 @@ export class MissileComponent {
   }
 
   moveRight(): void {
-    const hpos_m = this.left;
+    const hpos_m: number = this.left;
     if (hpos_m < window.innerWidth - this.width - 8) {
       this.left = hpos_m + this.hstep;
     }
   }
 
   moveLeft(): void {
-    const hpos_m = this.left;
+    const hpos_m: number = this.left;
     if (hpos_m > this.width) {
       this.left = hpos_m - this.hstep;
     }
@@ -61,9 +61,5 @@ export class MissileComponent {
 
   markAsNotLaunched(): void {
     this.launched = false;
-  }
-
-  isMissileLaunched() {
-    return false;
   }
 }

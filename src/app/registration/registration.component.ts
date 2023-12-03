@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import {Router} from "@angular/router";
+
 import {FenmAPIService} from "../shared/services/fenm-api.service";
 import {SessionStorageManagerService} from "../shared/services/session-storage-manager.service";
 import {ToastrService} from "ngx-toastr";
-import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-registration',
@@ -21,8 +22,7 @@ export class RegistrationComponent {
   confirmPassword: string = '';
 
   constructor(private apiService: FenmAPIService,
-              private toastr: ToastrService,
-              private router: Router) {}
+              private toastr: ToastrService) {}
 
   validateSubmit(event: any) : void {
     event.preventDefault();
@@ -52,15 +52,15 @@ export class RegistrationComponent {
     }
   }
 
-  register() {
-
-    let url = `username=${this.username}&email=${this.email}`;
+  register(): void {
+    let url: string = `username=${this.username}&email=${this.email}`;
         url += `&password=${this.password}`;
-    this.apiService.register(this.username,
-                             this.email,
-                             this.password
-                                          ).subscribe(
-        (response: any) => {
+    this.apiService.register(
+      this.username,
+      this.email,
+      this.password
+        ).subscribe(
+        (response: any): void => {
             if (response.status === 201) {
                 console.log(this.username + ' registered successfully');
                 this.toastr.success(this.username + ' registered successfully', 'Success');
@@ -85,12 +85,12 @@ export class RegistrationComponent {
         });
   }
 
-  validateUsernameExists() {
+  validateUsernameExists(): void {
     if (this.username == '' || this.username == ' ') {
       this.toastr.error("Username required");
     } else {
         this.apiService.doesUsernameExists(this.username).subscribe(
-            (response: any) => {
+            (response: any): void => {
                 if (response.status === 200) {
                     console.log('Username ' + this.username + ' already exists');
                     this.toastr.error('Username ' + this.username + ' already exists', 'Alert');

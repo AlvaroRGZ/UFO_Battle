@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class SessionStorageManagerService {
-  constructor() { }
+  constructor() {}
 
   saveJWToken(jwtoken: string) {
     sessionStorage.setItem("jwtoken", jwtoken);

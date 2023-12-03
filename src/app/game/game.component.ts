@@ -1,18 +1,25 @@
 import {Component, HostListener, ViewChild, OnDestroy} from '@angular/core';
-import {GameControllerService} from "../shared/services/game-controller.service";
-import {MissileComponent} from "../missile/missile.component";
-import {EnemyComponent} from "../enemy/enemy.component";
-import {LocalStorageManagerService} from "../shared/services/local-storage-manager.service";
-import Swal from 'sweetalert2'
 import {Router} from "@angular/router";
+import Swal from 'sweetalert2'
+
+import {LocalStorageManagerService} from "../shared/services/local-storage-manager.service";
 import {SessionStorageManagerService} from "../shared/services/session-storage-manager.service";
 import {FenmAPIService} from "../shared/services/fenm-api.service";
 import {ToastrService} from "ngx-toastr";
 
+import {MissileComponent} from "../missile/missile.component";
+import {EnemyComponent} from "../enemy/enemy.component";
+
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
-  styleUrls: ['./game.component.css']
+  styleUrls: ['./game.component.css'],
+  providers:  [
+    FenmAPIService,
+    LocalStorageManagerService,
+    SessionStorageManagerService,
+    ToastrService
+  ]
 })
 export class GameComponent implements OnDestroy {
   @ViewChild(MissileComponent) missile!: MissileComponent;
@@ -27,7 +34,6 @@ export class GameComponent implements OnDestroy {
   userLoggedIn: boolean = false;
 
   constructor(private router: Router,
-              private gameController: GameControllerService,
               private localStorageManager: LocalStorageManagerService,
               private sessionStorageManager: SessionStorageManagerService,
               private apiService: FenmAPIService,
@@ -38,7 +44,7 @@ export class GameComponent implements OnDestroy {
   }
 
   @HostListener('document:keydown', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
+  handleKeyboardEvent(event: KeyboardEvent): void {
     if (!this.missile.isLaunched()) {
       switch (event.key) {
         case 'ArrowRight':
@@ -54,19 +60,19 @@ export class GameComponent implements OnDestroy {
     }
   }
 
-  private pullTrigger() {
+  private pullTrigger(): void {
     this.missile.markAsLaunched()
     this.pid = setInterval(() => this.launch(), 10);
   }
 
-  private launch() {
+  private launch(): void {
     if (this.missile.isLaunched()) {
       this.missile.ascend(this);
       this.checkForHit();
     }
   }
 
-  private checkForHit() {
+  private checkForHit(): void {
     let destroyedEnemy: number = this.enemies.checkForHit(this.missile.left, this.missile.height, this.missile.width, this.missile.bottom);
     if (destroyedEnemy >= 0) {
       this.enemies.enemies.at(destroyedEnemy)!.explode();
@@ -75,10 +81,32 @@ export class GameComponent implements OnDestroy {
     }
   }
 
-  startTimeLeftCounter(){
-    this.timerPID = setInterval(() => {
+  displayTutorial(): void {
+    Swal.fire({
+      title: 'UFO Game Tutorial',
+      html: `
+      <div>
+        <p>Welcome to the UFO Game! Here's a quick guide to get you started:</p>
+        <ul>
+          <li>Use the <strong>arrow keys</strong> to move the missile <strong>left and right</strong>.</li>
+          <li>Press the <strong>space bar</strong> to launch the missile.</li>
+        </ul>
+        <p>Shoot down the UFOs and score points before the time runs out!</p>
+      <div>
+      `,
+      icon: 'info',
+      confirmButtonText: 'Start'
+    })
+      .then((): void => {
+        this.startTimeLeftCounter();
+      });
+  }
+
+  startTimeLeftCounter(): void{
+    this.timerPID = setInterval((): void => {
         if (this.totalTime === 0) {
           clearInterval(this.timerPID);
+          this.enemies.stop();
           this.displayEndOfTheGame();
         } else {
           this.totalTime--;
@@ -90,17 +118,7 @@ export class GameComponent implements OnDestroy {
       , 1000);
   }
 
-  calculateFinalScore() {
-    let factor = this.localStorageManager.getTime() / 60;
-    let penalty = this.calculatePenalties();
-    return (this.score / factor) - penalty;
-  }
-
-  calculatePenalties() {
-    return 50 * (this.localStorageManager.getNumberOfUFOs() - 1);
-  }
-
-  private displayEndOfTheGame() {
+  private displayEndOfTheGame(): void {
     Swal.fire({
       title: "<strong>Game over!</strong>",
       html: `
@@ -118,7 +136,7 @@ export class GameComponent implements OnDestroy {
       allowEscapeKey: false,
       allowEnterKey: false,
     })
-      .then((result) => {
+      .then((result): void => {
         if (result.isConfirmed) {
           window.location.reload();
         } else if (result.isDenied) {
@@ -129,28 +147,17 @@ export class GameComponent implements OnDestroy {
       });
   }
 
-  displayTutorial() {
-    Swal.fire({
-      title: 'UFO Game Tutorial',
-      html: `
-      <div>
-        <p>Welcome to the UFO Game! Here's a quick guide to get you started:</p>
-        <ul>
-          <li>Use the <strong>arrow keys</strong> to move the missile <strong>left and right</strong>.</li>
-          <li>Press the <strong>space bar</strong> to launch the missile.</li>
-        </ul>
-        <p>Shoot down the UFOs and score points before the time runs out!</p>
-      <div>
-      `,
-      icon: 'info',
-      confirmButtonText: 'Start'
-    })
-      .then(() => {
-        this.startTimeLeftCounter();
-      });
+  calculatePenalties(): number {
+    return 50 * (this.localStorageManager.getNumberOfUFOs() - 1);
   }
 
-  private saveRecord() {
+  calculateFinalScore(): number {
+    let factor: number = this.localStorageManager.getTime() / 60;
+    let penalty: number = this.calculatePenalties();
+    return (this.score / factor) - penalty;
+  }
+
+  private saveRecord(): void {
     if (this.userLoggedIn) {
       this.apiService.saveUserRecord(
         this.score,
@@ -158,27 +165,26 @@ export class GameComponent implements OnDestroy {
         this.localStorageManager.getTime(),
         this.sessionStorageManager.getJWToken()
       ).subscribe(
-        (response: any) => {
+        (response: any): void => {
           if (response.status === 201) {
             this.toastrService.success("Record saved successfully", "Record saved!");
-            this.displayEndOfTheGame();
           } else {
             console.log('Save: Worked but got an unexpected error');
           }
         },
         error => {
           if (error.status === 401) {
-            this.toastrService.success("Your session has expired", "Can not save");
+            this.toastrService.error("Your session has expired", "Can not save");
             console.log('Not valid token due to session expiration');
           } else {
-            console.log('Error error');
+            console.log('Unexpected error');
           }
         }
       );
     } else {
       this.toastrService.error("You must be logged in", "Can not save");
-      this.displayEndOfTheGame();
     }
+    this.displayEndOfTheGame();
   }
 
   ngOnDestroy(): void {

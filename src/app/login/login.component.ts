@@ -1,9 +1,8 @@
-
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { FenmAPIService } from 'src/app/shared/services/fenm-api.service';
 import { SessionStorageManagerService } from 'src/app/shared/services/session-storage-manager.service';
 import { ToastrService } from 'ngx-toastr';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -18,8 +17,10 @@ export class LoginComponent {
   username: string = '';
   password: string = '';
 
-  constructor(private router: Router, private apiService: FenmAPIService,
-              private toastr: ToastrService, private  sessionStorageManagerService: SessionStorageManagerService) {}
+  constructor(private apiService: FenmAPIService,
+              private toastr: ToastrService,
+              private  sessionStorageManagerService: SessionStorageManagerService,
+              private router: Router) {}
 
   validateSubmit() : void {
     let valid: boolean = true;
@@ -46,6 +47,7 @@ export class LoginComponent {
           this.toastr.success("Welcome " + this.username + "!", 'Logged in!');
           this.sessionStorageManagerService.saveJWToken(jwtToken);
           this.sessionStorageManagerService.saveUsername(this.username);
+          this.router.navigate(['presentation']);
         } else {
           console.log('Login: Worked but errors');
           this.toastr.info('Login: Worked but errors', 'Login failed');
