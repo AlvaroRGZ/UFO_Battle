@@ -49,5 +49,21 @@ export class FenmAPIService {
     return this.http.get(this.API_ROOT + path + username,
       {headers, observe: 'response' });
   }
+
+  saveUserRecord(score: number, ufos: number, time: number, jwtoken: string) {
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .set('accept', 'application/json')
+      .set('Authorization', jwtoken);
+
+    const urlEncodedParams: HttpParams = new HttpParams()
+      .set('punctuation', score)
+      .set('ufos', ufos)
+      .set('disposedTime', time);
+
+    const path: string = 'records/';
+    return this.http.post(this.API_ROOT + path, urlEncodedParams,
+      {headers, observe: 'response' });
+  }
 }
 

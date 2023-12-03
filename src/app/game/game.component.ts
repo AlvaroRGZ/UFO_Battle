@@ -1,17 +1,20 @@
-import {Component, HostListener, ViewChild} from '@angular/core';
+import {Component, HostListener, ViewChild, OnDestroy} from '@angular/core';
 import {GameControllerService} from "../shared/services/game-controller.service";
 import {MissileComponent} from "../missile/missile.component";
 import {EnemyComponent} from "../enemy/enemy.component";
 import {LocalStorageManagerService} from "../shared/services/local-storage-manager.service";
 import Swal from 'sweetalert2'
 import {Router} from "@angular/router";
+import {SessionStorageManagerService} from "../shared/services/session-storage-manager.service";
+import {FenmAPIService} from "../shared/services/fenm-api.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css']
 })
-export class GameComponent {
+export class GameComponent implements OnDestroy {
   @ViewChild(MissileComponent) missile!: MissileComponent;
   @ViewChild(EnemyComponent) enemies!: EnemyComponent;
 
@@ -21,12 +24,16 @@ export class GameComponent {
   timerPID: number = 0;
   timerColor: string = 'yellow';
 
+  userLoggedIn: boolean = false;
+
   constructor(private router: Router,
               private gameController: GameControllerService,
-              private localStorageManager: LocalStorageManagerService) {
-
+              private localStorageManager: LocalStorageManagerService,
+              private sessionStorageManager: SessionStorageManagerService,
+              private apiService: FenmAPIService,
+              private toastrService: ToastrService) {
+    this.userLoggedIn = this.sessionStorageManager.userIsLoggedIn();
     this.displayTutorial();
-
     this.totalTime = localStorageManager.getTime();
   }
 
@@ -45,10 +52,6 @@ export class GameComponent {
           break;
       }
     }
-  }
-
-  explotar(id: number): void {
-    this.gameController.triggerEnemyExplosion(id);
   }
 
   private pullTrigger() {
@@ -106,12 +109,11 @@ export class GameComponent {
           <p>UFOs Used: <b>${this.localStorageManager.getNumberOfUFOs()}</b></p>
           <p>Penalties: <b>- ${this.calculatePenalties()}</b></p>
           <p>Final Score: <b>${this.calculateFinalScore()}</b></p>
-        </div>
-      `,
+        </div>`,
       showDenyButton: true,
       showCancelButton: true,
       confirmButtonText: "Play again",
-      denyButtonText: `See records`,
+      denyButtonText: `Save record`,
       allowOutsideClick: false,
       allowEscapeKey: false,
       allowEnterKey: false,
@@ -120,7 +122,7 @@ export class GameComponent {
         if (result.isConfirmed) {
           window.location.reload();
         } else if (result.isDenied) {
-          this.router.navigate(['login']);
+          this.saveRecord();
         } else {
           this.router.navigate(['presentation']);
         }
@@ -146,5 +148,41 @@ export class GameComponent {
       .then(() => {
         this.startTimeLeftCounter();
       });
+  }
+
+  private saveRecord() {
+    if (this.userLoggedIn) {
+      this.apiService.saveUserRecord(
+        this.score,
+        this.localStorageManager.getNumberOfUFOs(),
+        this.localStorageManager.getTime(),
+        this.sessionStorageManager.getJWToken()
+      ).subscribe(
+        (response: any) => {
+          if (response.status === 201) {
+            this.toastrService.success("Record saved successfully", "Record saved!");
+            this.displayEndOfTheGame();
+          } else {
+            console.log('Save: Worked but got an unexpected error');
+          }
+        },
+        error => {
+          if (error.status === 401) {
+            this.toastrService.success("Your session has expired", "Can not save");
+            console.log('Not valid token due to session expiration');
+          } else {
+            console.log('Error error');
+          }
+        }
+      );
+    } else {
+      this.toastrService.error("You must be logged in", "Can not save");
+      this.displayEndOfTheGame();
+    }
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.pid);
+    clearInterval(this.timerPID);
   }
 }

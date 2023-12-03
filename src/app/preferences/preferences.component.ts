@@ -13,18 +13,18 @@ export class PreferencesComponent {
   constructor(private localStorageManager: LocalStorageManagerService,
               private toastr: ToastrService) {
     this.numberOfUFOs = this.localStorageManager.getNumberOfUFOs();
-    this.time = this.localStorageManager.getTime()
+    this.time = this.localStorageManager.getTime();
   }
 
   loadSavedPreferences(): void {
     this.numberOfUFOs = this.localStorageManager.getNumberOfUFOs();
-    this.time = this.localStorageManager.getTime()
+    this.time = this.localStorageManager.getTime();
   }
 
   savePreferences(event: any): void {
     event.preventDefault();
-    this.localStorageManager.setNumberOfUFOs(this.numberOfUFOs)
-    this.localStorageManager.setTime(this.time)
+    this.localStorageManager.setNumberOfUFOs(this.numberOfUFOs);
+    this.localStorageManager.setTime(this.time);
     this.toastr.success('Preferences updated!');
   }
 }
